@@ -7,13 +7,14 @@ using Random = UnityEngine.Random;
 
 public class Tile : MonoBehaviour
 {
-    //private Renderer tileRenderer;
+    //private Renderer tileRenderer;#
+    public GameObject gameObjectToSpawn;
+    public TileArray tileArray;
 
     private void Start()
     {
-
-        Color resultColor = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1f, 1f);
-        GetComponent<Renderer>().material.color = resultColor;  
+        gameObjectToSpawn = tileArray.GetRandomTile();
+        Instantiate(gameObjectToSpawn, transform.position, transform.rotation);
         
     }
 
