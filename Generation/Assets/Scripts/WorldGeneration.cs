@@ -11,12 +11,14 @@ public class WorldGeneration : MonoBehaviour
     private int height;
     private int[,] gridArray;
 
-
+    [SerializeField]
+    public int seedValue;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        UnityEngine.Random.InitState(seedValue);
         Generate(Vector3.zero);
     }
 
