@@ -27,7 +27,7 @@ public class WorldGeneration : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Generate(Vector3.zero); //We want this to be the location of the player so tiles can be generated as they move
+            Generate(new Vector3(Mathf.RoundToInt(this.transform.position.x), Mathf.RoundToInt(this.transform.position.y), Mathf.RoundToInt(this.transform.position.z))); //We want this to be the location of the player so tiles can be generated as they move
             //For now this is on space, eventually it will just be in update so we don't crash anything
         }
     }
