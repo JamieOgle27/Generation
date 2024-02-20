@@ -1,10 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WorldGeneration : MonoBehaviour
 {
+    public static WorldGeneration Instance;
+
     public GameObject groundPlane;
     public int layersToGenerate;
     private int width;
@@ -13,12 +17,30 @@ public class WorldGeneration : MonoBehaviour
 
     [SerializeField]
     public int seedValue;
+    public bool randomSeed;
+
+
+    private void Awake()
+    {
+        if (randomSeed)
+        {
+            seedValue = UnityEngine.Random.Range(-2147483647, 2147483647);
+        }
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        UnityEngine.Random.InitState(seedValue);
+        //UnityEngine.Random.InitState(seedValue);
         Generate(Vector3.zero);
     }
 
@@ -50,7 +72,8 @@ public class WorldGeneration : MonoBehaviour
                     if (Mathf.Abs(x) == width || Mathf.Abs(y) == height)
                     {
                         Instantiate(groundPlane, new Vector3(x, 0, y) + origin, groundPlane.transform.rotation);
-                        //Debug.Log(x + " , " + y);
+                        Debug.Log(new Vector3(x, 0, y) + origin);
+                        
                     }
                 }
             }

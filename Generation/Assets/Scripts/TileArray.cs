@@ -8,7 +8,15 @@ public class TileArray : MonoBehaviour
 
     public GameObject GetRandomTile()
     {
+        //Should Only be using this if we're not inputing a seed, will be different every time. 
         int randomNumber = Random.Range(0,tiles.Length);
+        return tiles[randomNumber];
+    }
+
+    public GameObject GetRandomTile(int seed)
+    {
+        
+        int randomNumber = seed % tiles.Length;
         return tiles[randomNumber];
     }
 }
