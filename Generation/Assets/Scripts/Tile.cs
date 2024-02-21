@@ -27,12 +27,14 @@ public class Tile : MonoBehaviour
         SpawnTile();
     }
 
+
     private void SpawnTile()
     {
         System.Random rng = GetRandomMethod(); //Are tiles random by position or by layer (or more down the line)
         var rand1 = rng.Next();
+        var rand2 = rng.Next();
         gameObjectToSpawn = tileArray.GetRandomTile(rand1);
-        Quaternion spawnRotation = GetRandomRotation(rand1);
+        Quaternion spawnRotation = GetRandomRotation(rand2);
         Instantiate(gameObjectToSpawn, this.transform.position, spawnRotation, this.transform);
     }
     private System.Random GetRandomMethod()
@@ -51,9 +53,9 @@ public class Tile : MonoBehaviour
         Debug.Log("ERROR: private System.Random GetRandomMethod() failed to dectet the random method, an unseeded System.Random was used instead");
         return new System.Random();
     }
-    private Quaternion GetRandomRotation(int seed)
+    public Quaternion GetRandomRotation(int seed)
     {
-        int rotationOffset = Random.Range(0,4) * 90; // 0*90 - 0, 1*90 - 90, 2*90 - 180, 3*90 - 270
+        int rotationOffset = seed % 4 * 90; // 0*90 - 0, 1*90 - 90, 2*90 - 180, 3*90 - 270
         return Quaternion.Euler(this.transform.rotation.x, this.transform.rotation.y + rotationOffset, this.transform.rotation.z);
     }
 }

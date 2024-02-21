@@ -48,11 +48,15 @@ public class WorldGeneration : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Generate(new Vector3(Mathf.RoundToInt(this.transform.position.x), Mathf.RoundToInt(this.transform.position.y), Mathf.RoundToInt(this.transform.position.z))); //We want this to be the location of the player so tiles can be generated as they move
+
+        
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Generate(new Vector3(Mathf.RoundToInt(this.transform.position.x), Mathf.RoundToInt(this.transform.position.y), Mathf.RoundToInt(this.transform.position.z))); //We want this to be the location of the player so tiles can be generated as they move
             //For now this is on space, eventually it will just be in update so we don't crash anything
         }
+        
     }
 
     //This is the main function that will be used to do the generation - called on Start atm, but later we can put this on a button so players can fill out settings, etc first. 
