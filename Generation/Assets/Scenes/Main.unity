@@ -339,9 +339,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundPlane: {fileID: 7490824091226403999, guid: ff312cf1da0a89f45ba4445fd0ad46b7, type: 3}
-  layersToGenerate: 3
-  seedValue: 1617753839
-  randomSeed: 0
+  layersToGenerate: 6
+  seedValue: 420
+  randomSeed: 1
+  spawnSameTileInEachlayer: 0
 --- !u!4 &1683547999
 Transform:
   m_ObjectHideFlags: 0

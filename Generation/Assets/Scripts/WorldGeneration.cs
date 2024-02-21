@@ -18,6 +18,7 @@ public class WorldGeneration : MonoBehaviour
     [SerializeField]
     public int seedValue;
     public bool randomSeed;
+    public bool spawnSameTileInEachlayer;
 
 
     private void Awake()
@@ -63,7 +64,7 @@ public class WorldGeneration : MonoBehaviour
         {
             width = i; height = i;
             gridArray = new int[i, i];
-            Debug.Log("Layer: " + i);
+            //Debug.Log("Layer: " + i);
 
             for (int x = -width; x <= gridArray.GetLength(0); x++)
             {
@@ -72,7 +73,8 @@ public class WorldGeneration : MonoBehaviour
                     if (Mathf.Abs(x) == width || Mathf.Abs(y) == height)
                     {
                         Instantiate(groundPlane, new Vector3(x, 0, y) + origin, groundPlane.transform.rotation);
-                        Debug.Log(new Vector3(x, 0, y) + origin);
+                        groundPlane.GetComponent<Tile>().layersSpawnSameTile = spawnSameTileInEachlayer;
+                        //Debug.Log(new Vector3(x, 0, y) + origin);
                         
                     }
                 }
