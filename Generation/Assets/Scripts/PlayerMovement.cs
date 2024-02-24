@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.forward * Time.deltaTime * Input.GetAxis("Vertical") * moveSpeed);
-        transform.Translate(Vector3.right * Time.deltaTime * Input.GetAxis("Horizontal") * moveSpeed);
+        transform.Translate(Vector3.forward * Time.deltaTime * Input.GetAxis("Vertical") * -moveSpeed, Space.World);
+        transform.Translate(Vector3.right * Time.deltaTime * Input.GetAxis("Horizontal") * -moveSpeed, Space.World);
     }
 }

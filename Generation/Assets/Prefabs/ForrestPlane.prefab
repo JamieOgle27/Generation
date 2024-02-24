@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7490824091226403999
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9052163089649568935}
+  - component: {fileID: 2618749053890534112}
+  m_Layer: 0
+  m_Name: ForrestPlane
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9052163089649568935
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7490824091226403999}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2618749053890534112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7490824091226403999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b1709a804211a241b6834053eba0b76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameObjectToSpawn: {fileID: 0}
+  tileArrays:
+  - {fileID: 4114407464342782951, guid: eb345ed603a94d649ab5a3c3ea9a6961, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  - {fileID: 4114407464342782951, guid: 310e8b1b5f0dd2646bbb48eb7ed0d965, type: 3}
+  tileArray: {fileID: 0}
+  layersSpawnSameTile: 1
+  layerIndex: 0

@@ -7,8 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class WorldGeneration : MonoBehaviour
 {
+    public GameObject player;
     public static WorldGeneration Instance;
-
     public GameObject groundPlane;
     public int layersToGenerate;
     private int width;
@@ -23,6 +23,7 @@ public class WorldGeneration : MonoBehaviour
 
     private void Awake()
     {
+
         if (randomSeed)
         {
             seedValue = UnityEngine.Random.Range(-2147483647, 2147483647);
@@ -42,18 +43,19 @@ public class WorldGeneration : MonoBehaviour
     void Start()
     {
         //UnityEngine.Random.InitState(seedValue);
-        Generate(Vector3.zero);
+        Generate(new Vector3(Mathf.RoundToInt(player.transform.position.x), 0, Mathf.RoundToInt(player.transform.position.z))); //We want this to be the location of the player so tiles can be generated as they move
+
     }
 
     // Update is called once per frame
     void Update()
     {
         //Generate(new Vector3(Mathf.RoundToInt(this.transform.position.x), Mathf.RoundToInt(this.transform.position.y), Mathf.RoundToInt(this.transform.position.z))); //We want this to be the location of the player so tiles can be generated as they move
-
+        
         
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Generate(new Vector3(Mathf.RoundToInt(this.transform.position.x), Mathf.RoundToInt(this.transform.position.y), Mathf.RoundToInt(this.transform.position.z))); //We want this to be the location of the player so tiles can be generated as they move
+        Generate(new Vector3(Mathf.RoundToInt(player.transform.position.x), 0, Mathf.RoundToInt(player.transform.position.z))); //We want this to be the location of the player so tiles can be generated as they move
             //For now this is on space, eventually it will just be in update so we don't crash anything
         }
         
@@ -76,8 +78,8 @@ public class WorldGeneration : MonoBehaviour
                 {
                     if (Mathf.Abs(x) == width || Mathf.Abs(y) == height)
                     {
-                        Instantiate(groundPlane, new Vector3(x, 0, y) + origin, groundPlane.transform.rotation);
-                        groundPlane.GetComponent<Tile>().layersSpawnSameTile = spawnSameTileInEachlayer;
+                        GameObject spawn = Instantiate(groundPlane, new Vector3(x, 0, y) + origin, groundPlane.transform.rotation);
+                        spawn.GetComponent<Tile>().layersSpawnSameTile = spawnSameTileInEachlayer;
                         //Debug.Log(new Vector3(x, 0, y) + origin);
                         
                     }
@@ -86,5 +88,7 @@ public class WorldGeneration : MonoBehaviour
         }
 
     }
+
+
 
 }

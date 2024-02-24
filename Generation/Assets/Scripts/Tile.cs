@@ -11,10 +11,12 @@ public class Tile : MonoBehaviour
 {
     //private Renderer tileRenderer;#
     public GameObject gameObjectToSpawn;
+    public TileArray[] tileArrays;
     public TileArray tileArray;
     public bool layersSpawnSameTile; //If True layers will spawn the same tile, otherwise the tile will be completely random. 
 
     public int layerIndex;
+    private Vector3 instantiatePosition;
     //public int tileIndex;
 
     private void Awake()
@@ -27,15 +29,21 @@ public class Tile : MonoBehaviour
         SpawnTile();
     }
 
-
     private void SpawnTile()
     {
+        float xOffset = Mathf.Round(WorldGeneration.Instance.transform.position.x) - WorldGeneration.Instance.transform.position.x;
+        float zOffset = Mathf.Round(WorldGeneration.Instance.transform.position.z) - WorldGeneration.Instance.transform.position.z;
+        instantiatePosition = new Vector3(this.transform.position.x - xOffset, this.transform.position.y, this.transform.position.z - zOffset);
         System.Random rng = GetRandomMethod(); //Are tiles random by position or by layer (or more down the line)
         var rand1 = rng.Next();
         var rand2 = rng.Next();
-        gameObjectToSpawn = tileArray.GetRandomTile(rand1);
-        Quaternion spawnRotation = GetRandomRotation(rand2);
-        Instantiate(gameObjectToSpawn, this.transform.position, spawnRotation, this.transform);
+        var rand3 = rng.Next();
+        tileArray = GetTileArray(rand1);
+        gameObjectToSpawn = tileArray.GetRandomTile(rand2);
+        Quaternion spawnRotation = GetRandomRotation(rand3);
+
+        Instantiate(gameObjectToSpawn, instantiatePosition, spawnRotation, this.transform);
+        //Debug.Log(instantiatePosition);
     }
     private System.Random GetRandomMethod()
     {
@@ -47,7 +55,11 @@ public class Tile : MonoBehaviour
         }
         else if (!layersSpawnSameTile) //Random system uses position with a seed  to keep tiles in the same position consistent every time the game is run
         {
-            System.Random rng = new System.Random(this.transform.position.GetHashCode() + WorldGeneration.Instance.seedValue);
+            float xConsistentPosition = this.transform.position.x - Mathf.RoundToInt(WorldGeneration.Instance.transform.position.x);
+            float zConsistentPosition = this.transform.position.z - Mathf.RoundToInt(WorldGeneration.Instance.transform.position.z);
+            Vector3 consistentPosition = new Vector3(xConsistentPosition, 0, zConsistentPosition);
+            System.Random rng = new System.Random((consistentPosition).GetHashCode() + WorldGeneration.Instance.seedValue);
+            Debug.Log(this.transform.position);
             return rng;
         }
         Debug.Log("ERROR: private System.Random GetRandomMethod() failed to dectet the random method, an unseeded System.Random was used instead");
@@ -57,5 +69,10 @@ public class Tile : MonoBehaviour
     {
         int rotationOffset = seed % 4 * 90; // 0*90 - 0, 1*90 - 90, 2*90 - 180, 3*90 - 270
         return Quaternion.Euler(this.transform.rotation.x, this.transform.rotation.y + rotationOffset, this.transform.rotation.z);
+    }
+    TileArray GetTileArray(int seed)
+    {
+        TileArray spawn = tileArrays[seed % tileArrays.Length];
+        return spawn;
     }
 }
