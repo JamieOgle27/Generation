@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public int moveSpeed;
+    private int moveSpeed = 8; //This has to be consistent between every gameobject with this script attached!!!
+
+    private void Start()
+    {
+    }
     // Update is called once per frame
     void Update()
     {

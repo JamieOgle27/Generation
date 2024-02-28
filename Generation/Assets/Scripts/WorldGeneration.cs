@@ -20,9 +20,16 @@ public class WorldGeneration : MonoBehaviour
     public bool randomSeed;
     public bool spawnSameTileInEachlayer;
 
+    public List<Vector3> tilesLiveInScene;
+    public int tilesLiveInSceneCount;
+
+    private float travelSinceSpawnDistance;
+    public float checkForGenerateDistance;
+    private Vector3 lastGeneratePosition;
 
     private void Awake()
     {
+        lastGeneratePosition = transform.position;
 
         if (randomSeed)
         {
@@ -43,30 +50,36 @@ public class WorldGeneration : MonoBehaviour
     void Start()
     {
         //UnityEngine.Random.InitState(seedValue);
-        Generate(new Vector3(Mathf.RoundToInt(player.transform.position.x), 0, Mathf.RoundToInt(player.transform.position.z))); //We want this to be the location of the player so tiles can be generated as they move
+        Generate(new Vector3(Mathf.RoundToInt(player.transform.position.x), 0, Mathf.RoundToInt(player.transform.position.z)), layersToGenerate); //We want this to be the location of the player so tiles can be generated as they move
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Generate(new Vector3(Mathf.RoundToInt(this.transform.position.x), Mathf.RoundToInt(this.transform.position.y), Mathf.RoundToInt(this.transform.position.z))); //We want this to be the location of the player so tiles can be generated as they move
-        
-        
+        if(travelSinceSpawnDistance > checkForGenerateDistance)
+        {
+            Generate(new Vector3(Mathf.RoundToInt(player.transform.position.x), 0, Mathf.RoundToInt(player.transform.position.z)), layersToGenerate); //We want this to be the location of the player so tiles can be generated as they move
+            lastGeneratePosition = transform.position;
+        }
+
+        travelSinceSpawnDistance = Vector3.Distance(transform.position, lastGeneratePosition);
+
+        /*
         if (Input.GetKeyDown(KeyCode.Space))
         {
-        Generate(new Vector3(Mathf.RoundToInt(player.transform.position.x), 0, Mathf.RoundToInt(player.transform.position.z))); //We want this to be the location of the player so tiles can be generated as they move
+        Generate(new Vector3(Mathf.RoundToInt(player.transform.position.x), 0, Mathf.RoundToInt(player.transform.position.z)), layersToGenerate); //We want this to be the location of the player so tiles can be generated as they move
             //For now this is on space, eventually it will just be in update so we don't crash anything
         }
-        
+        */
     }
 
     //This is the main function that will be used to do the generation - called on Start atm, but later we can put this on a button so players can fill out settings, etc first. 
-    void Generate(Vector3 origin)
+    void Generate(Vector3 origin, int layers)
     {
         //ToDo: Stop tiles from spawning where they already exist
 
-        for (int i = 0; i < layersToGenerate; i++)
+        for (int i = 0; i < layers; i++)
         {
             width = i; height = i;
             gridArray = new int[i, i];
@@ -89,6 +102,22 @@ public class WorldGeneration : MonoBehaviour
 
     }
 
+    void GenerateOuterLayersOnly(Vector3 origin, int layers)
+    {
 
+    }
+
+    public void AddTileLiveInScene(Vector3 tile)
+    {
+        tilesLiveInSceneCount++;
+        tilesLiveInScene.Add(tile);
+    }
+
+    public void RemoveTileLiveInScene(Vector3 tile)
+    {
+        //Debug.Log("Tile Removed: " + tile);
+        tilesLiveInSceneCount--;
+        tilesLiveInScene.Remove(tile);
+    }
 
 }

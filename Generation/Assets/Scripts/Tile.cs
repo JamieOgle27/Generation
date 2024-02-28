@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TreeEditor;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -17,17 +16,27 @@ public class Tile : MonoBehaviour
 
     public int layerIndex;
     private Vector3 instantiatePosition;
+    public Vector3 consistentPosition;
     //public int tileIndex;
 
     private void Awake()
     {
-        layerIndex = Mathf.Max(Mathf.RoundToInt(Mathf.Abs(this.transform.position.x)), Mathf.RoundToInt(Mathf.Abs(this.transform.position.z)));
+        layerIndex = Mathf.Max(Mathf.RoundToInt(Mathf.Abs(WorldGeneration.Instance.transform.position.x)) + Mathf.RoundToInt(Mathf.Abs(this.transform.position.x)), Mathf.RoundToInt(Mathf.Abs(WorldGeneration.Instance.transform.position.z)) + Mathf.RoundToInt(Mathf.Abs(this.transform.position.z))); //This only works for initial spawn - need to get the current layer
     }
 
     private void Start()
     {
-        SpawnTile();
+        if (CanWeSpawnThisTile())
+        {
+            SpawnTile();
+        }
+        else
+        {
+            Destroy(gameObject);
+            //Debug.Log("Tile Destroyed at:" + instantiatePosition);
+        }
     }
+    
 
     private void SpawnTile()
     {
@@ -38,28 +47,30 @@ public class Tile : MonoBehaviour
         var rand1 = rng.Next();
         var rand2 = rng.Next();
         var rand3 = rng.Next();
-        tileArray = GetTileArray(rand1);
-        gameObjectToSpawn = tileArray.GetRandomTile(rand2);
-        Quaternion spawnRotation = GetRandomRotation(rand3);
-
-        Instantiate(gameObjectToSpawn, instantiatePosition, spawnRotation, this.transform);
-        //Debug.Log(instantiatePosition);
+        tileArray = GetTileArray(rand3);
+        gameObjectToSpawn = tileArray.GetRandomTile(rand1);
+        Quaternion spawnRotation = GetRandomRotation(rand2);
+       
+            Instantiate(gameObjectToSpawn, instantiatePosition, spawnRotation, this.transform);
+            //Debug.Log("Tile created at: " + instantiatePosition);
+      
     }
     private System.Random GetRandomMethod()
     {
+        consistentPosition = GetConsistentPosition();
         if (layersSpawnSameTile) //Random system uses layerIndex with a seed to keep tiles in the same layer consistent every time the game is run
         {
-            System.Random rng = new System.Random(layerIndex * WorldGeneration.Instance.seedValue);
+            System.Random rng = new System.Random((layerIndex * WorldGeneration.Instance.seedValue).GetHashCode());
+            Debug.Log(layerIndex);
             return rng;
+            
 
         }
         else if (!layersSpawnSameTile) //Random system uses position with a seed  to keep tiles in the same position consistent every time the game is run
         {
-            float xConsistentPosition = this.transform.position.x - Mathf.RoundToInt(WorldGeneration.Instance.transform.position.x);
-            float zConsistentPosition = this.transform.position.z - Mathf.RoundToInt(WorldGeneration.Instance.transform.position.z);
-            Vector3 consistentPosition = new Vector3(xConsistentPosition, 0, zConsistentPosition);
+            
             System.Random rng = new System.Random((consistentPosition).GetHashCode() + WorldGeneration.Instance.seedValue);
-            Debug.Log(this.transform.position);
+            //Debug.Log(this.transform.position);
             return rng;
         }
         Debug.Log("ERROR: private System.Random GetRandomMethod() failed to dectet the random method, an unseeded System.Random was used instead");
@@ -74,5 +85,30 @@ public class Tile : MonoBehaviour
     {
         TileArray spawn = tileArrays[seed % tileArrays.Length];
         return spawn;
+    }
+
+    private bool CanWeSpawnThisTile()
+    {
+        Vector3 tileLocation = GetConsistentPosition();
+
+        if (WorldGeneration.Instance.tilesLiveInScene.Contains(tileLocation))
+        {
+            //Debug.Log(tileLocation + ": Tile is live in scene");
+            return false;
+        }
+        else
+        {
+            //Debug.Log(tileLocation + ": Couldn't find tile");
+            WorldGeneration.Instance.AddTileLiveInScene(tileLocation);
+            return true;
+        }
+    }
+
+    private Vector3 GetConsistentPosition()
+    {
+        float xConsistentPosition = this.transform.position.x - Mathf.RoundToInt(WorldGeneration.Instance.transform.position.x);
+        float zConsistentPosition = this.transform.position.z - Mathf.RoundToInt(WorldGeneration.Instance.transform.position.z);
+        Vector3 p = new Vector3(xConsistentPosition, 0, zConsistentPosition);
+        return p;
     }
 }

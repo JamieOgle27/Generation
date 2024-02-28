@@ -20,4 +20,6 @@ public class TileArray : MonoBehaviour
         int randomNumber = seed % tiles.Length;
         return tiles[randomNumber];
     }
+
+
 }

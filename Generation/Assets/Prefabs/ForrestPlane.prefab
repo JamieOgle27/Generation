@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9052163089649568935}
   - component: {fileID: 2618749053890534112}
+  - component: {fileID: 7417208580727682277}
   m_Layer: 0
   m_Name: ForrestPlane
   m_TagString: Untagged
@@ -69,3 +70,16 @@ MonoBehaviour:
   tileArray: {fileID: 0}
   layersSpawnSameTile: 1
   layerIndex: 0
+  consistentPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &7417208580727682277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7490824091226403999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e07ce57e4cc94734f833c3c6f539b0b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
