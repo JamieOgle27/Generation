@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,6 +11,7 @@ public class WorldGeneration : MonoBehaviour
     public GameObject player;
     public static WorldGeneration Instance;
     public GameObject groundPlane;
+    public GameObject[] groundPlanes;
     public int layersToGenerate;
     private int width;
     private int height;
@@ -26,6 +28,8 @@ public class WorldGeneration : MonoBehaviour
     private float travelSinceSpawnDistance;
     public float checkForGenerateDistance;
     private Vector3 lastGeneratePosition;
+
+    public GameObject[] biomesNear;
 
     private void Awake()
     {
@@ -78,6 +82,7 @@ public class WorldGeneration : MonoBehaviour
     void Generate(Vector3 origin, int layers)
     {
         //ToDo: Stop tiles from spawning where they already exist
+        CheckForBiomes();
 
         for (int i = 0; i < layers; i++)
         {
@@ -91,7 +96,9 @@ public class WorldGeneration : MonoBehaviour
                 {
                     if (Mathf.Abs(x) == width || Mathf.Abs(y) == height)
                     {
-                        GameObject spawn = Instantiate(groundPlane, new Vector3(x, 0, y) + origin, groundPlane.transform.rotation);
+                        Vector3 spawnPos = new Vector3(x, 0, y) + origin;
+                        groundPlane = GetBiomeForTile(spawnPos);
+                        GameObject spawn = Instantiate(groundPlane, spawnPos, groundPlane.transform.rotation);
                         spawn.GetComponent<Tile>().layersSpawnSameTile = spawnSameTileInEachlayer;
                         //Debug.Log(new Vector3(x, 0, y) + origin);
                         
@@ -120,4 +127,37 @@ public class WorldGeneration : MonoBehaviour
         tilesLiveInScene.Remove(tile);
     }
 
+    private void CheckForBiomes()
+    {
+        biomesNear = GameObject.FindGameObjectsWithTag("Biome");
+    }
+
+    private GameObject GetBiomeForTile(Vector3 spawnPos)
+    {
+        
+        GameObject spawnTile = null;
+        float lowestDist = Mathf.Infinity;
+
+        for(int i = 0; i < biomesNear.Length; i++)
+        {
+            float dist = Vector3.Distance(biomesNear[i].transform.position, spawnPos);
+            if (dist < lowestDist)
+            {
+                lowestDist = dist;
+                if (biomesNear[i].name == "FORREST")
+                {
+                    spawnTile = groundPlanes[1]; //biomesNear needs to be able to match up to the groundPlanes so not matter the order it works.
+                }
+                if (biomesNear[i].name == "CITY")
+                {
+                    spawnTile = groundPlanes[0]; //biomesNear needs to be able to match up to the groundPlanes so not matter the order it works.
+                }
+
+            }
+        }
+        Debug.Log(spawnPos);
+        Debug.Log(spawnTile.name);
+        return spawnTile;
+
+    }
 }

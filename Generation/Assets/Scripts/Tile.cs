@@ -47,7 +47,8 @@ public class Tile : MonoBehaviour
         var rand1 = rng.Next();
         var rand2 = rng.Next();
         var rand3 = rng.Next();
-        tileArray = GetTileArray(rand3);
+        //Debug.Log(rand1 + " , " + rand2 + " , " + rand3);
+        tileArray = GetTile(rand3);
         gameObjectToSpawn = tileArray.GetRandomTile(rand1);
         Quaternion spawnRotation = GetRandomRotation(rand2);
        
@@ -69,7 +70,7 @@ public class Tile : MonoBehaviour
         else if (!layersSpawnSameTile) //Random system uses position with a seed  to keep tiles in the same position consistent every time the game is run
         {
             
-            System.Random rng = new System.Random((consistentPosition).GetHashCode() + WorldGeneration.Instance.seedValue);
+            System.Random rng = new System.Random((consistentPosition).GetHashCode() * WorldGeneration.Instance.seedValue);
             //Debug.Log(this.transform.position);
             return rng;
         }
@@ -81,7 +82,7 @@ public class Tile : MonoBehaviour
         int rotationOffset = seed % 4 * 90; // 0*90 - 0, 1*90 - 90, 2*90 - 180, 3*90 - 270
         return Quaternion.Euler(this.transform.rotation.x, this.transform.rotation.y + rotationOffset, this.transform.rotation.z);
     }
-    TileArray GetTileArray(int seed)
+    TileArray GetTile(int seed)
     {
         TileArray spawn = tileArrays[seed % tileArrays.Length];
         return spawn;
