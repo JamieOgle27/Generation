@@ -63,7 +63,7 @@ public class WorldGeneration : MonoBehaviour
     {
         if(travelSinceSpawnDistance > checkForGenerateDistance)
         {
-            Generate(new Vector3(Mathf.RoundToInt(player.transform.position.x), 0, Mathf.RoundToInt(player.transform.position.z)), layersToGenerate); //We want this to be the location of the player so tiles can be generated as they move
+            GenerateOuterLayersOnly(new Vector3(Mathf.RoundToInt(player.transform.position.x), 0, Mathf.RoundToInt(player.transform.position.z)), layersToGenerate); //We want this to be the location of the player so tiles can be generated as they move
             lastGeneratePosition = transform.position;
         }
 
@@ -94,7 +94,7 @@ public class WorldGeneration : MonoBehaviour
             {
                 for (int y = -height; y <= gridArray.GetLength(1); y++)
                 {
-                    if (Mathf.Abs(x) == width || Mathf.Abs(y) == height)
+                    if (Mathf.Abs(x) == width|| Mathf.Abs(y) == height)
                     {
                         Vector3 spawnPos = new Vector3(x, 0, y) + origin;
                         groundPlane = GetBiomeForTile(spawnPos);
@@ -111,6 +111,31 @@ public class WorldGeneration : MonoBehaviour
 
     void GenerateOuterLayersOnly(Vector3 origin, int layers)
     {
+        //ToDo: Stop tiles from spawning where they already exist
+        CheckForBiomes();
+
+        for (int i = 0; i < layers; i++)
+        {
+            width = i; height = i;
+            gridArray = new int[i, i];
+            //Debug.Log("Layer: " + i);
+
+            for (int x = -width; x <= gridArray.GetLength(0); x++)
+            {
+                for (int y = -height; y <= gridArray.GetLength(1); y++)
+                {
+                    if (Mathf.Abs(x) == width && width >= layersToGenerate - 2 || Mathf.Abs(y) == height && height >= (layersToGenerate - 2))
+                    {
+                        Vector3 spawnPos = new Vector3(x, 0, y) + origin;
+                        groundPlane = GetBiomeForTile(spawnPos);
+                        GameObject spawn = Instantiate(groundPlane, spawnPos, groundPlane.transform.rotation);
+                        spawn.GetComponent<Tile>().layersSpawnSameTile = spawnSameTileInEachlayer;
+                        //Debug.Log(new Vector3(x, 0, y) + origin);
+
+                    }
+                }
+            }
+        }
 
     }
 
